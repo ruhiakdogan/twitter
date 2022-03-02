@@ -1,4 +1,3 @@
-% % time
 import tweepy
 import configparser
 import pandas as pd
@@ -20,7 +19,7 @@ client = tweepy.Client(bearer_token=beerer_token)
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
 db = m_client.some_database
-tarkan = db.tarkan
+tweets = db.tweets
 
 limit = 100
 
@@ -30,13 +29,13 @@ def get_tweets():
 
     for tweet in tweets:
         print("selamlar")
-        if (tarkan.count_documents({"tweet": tweet.full_text}) == 0):
+        if (tweets.count_documents({"tweet": tweet.full_text}) == 0):
             print("merhaba")
             if (tweet.full_text.startswith("RT @") == False):
-                tarkan.insert_one({"tweet": tweet.full_text})
+                tweets.insert_one({"tweet": tweet.full_text})
             else:
                 text = ' '.join(tweet.full_text.split()[2:])
-                tarkan.insert_one({"tweet": text})
+                tweets.insert_one({"tweet": text})
 
 
 schedule.every(3.5).seconds.do(get_tweets)
